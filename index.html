@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -6,7 +7,52 @@
 </head>
 
 <body>
+	<div id="darcy-container">
+		<div id="darcy-canvas">
+			<canvas id="original"></canvas>
+			<canvas id="new"></canvas>
+		</div>
+		<div id="darcy-forms" style="font-size:14px;margin:10px; padding: 5px 10px; border-style:solid; border-width:2px;">
+			<div style="display:inline-block;">
+				<b>F(x,y) = (p(x,y), q(x,y))</b> where:<br /><br />
+				<b>p(x,y) = </b> 
+				<input class="quad" id="pxx" type="number" step="0.01" value="0.00" style="width:50px;"></input>
+				<b> x<sup>2</sup> + </b>
+				<input class="quad" id="pxy" type="number" step="0.01" value="0.00" style="width:50px;"></input>
+				<b> xy + </b>
+				<input class="quad" id="pyy" type="number" step="0.01" value="0.00" style="width:50px;"></input>
+				<b> y<sup>2</sup> + </b>
+				<input class="quad" id="px" type="number" step="0.01" value="1.00" style="width:50px;"></input>
+				<b> x + </b>
+				<input class="quad" id="py" type="number" step="0.01" value="0.00" style="width:50px;"></input>
+				<b> y</b>
 
+				<br />
+
+				<b>q(x,y) = </b> 
+				<input class="quad" id="qxx" type="number" step="0.01" value="0.00" style="width:50px;"></input>
+				<b> x<sup>2</sup> + </b>
+				<input class="quad" id="qxy" type="number" step="0.01" value="0.00" style="width:50px;"></input>
+				<b> xy + </b>
+				<input class="quad" id="qyy" type="number" step="0.01" value="0.00" style="width:50px;"></input>
+				<b> y<sup>2</sup> + </b>
+				<input class="quad" id="qx" type="number" step="0.01" value="0.00" style="width:50px;"></input>
+				<b> x + </b>
+				<input class="quad" id="qy" type="number" step="0.01" value="1.00" style="width:50px;"></input>
+				<b> y</b>
+			</div>
+			<div style="display:inline-block;vertical-align:top;padding-left:5px;">
+				<b>x-range: </b>
+				<input class="range" id="min_x" type="number" step="1" value="-5" style="width:40px;"></input>
+				to 
+				<input class="range" id="max_x" type="number" step="1" value="5" style="width:40px;"></input>
+				<b> y-range: </b>
+				<input class="range" id="min_y" type="number" step="1" value="-5" style="width:40px;"></input>
+				to 
+				<input class="range" id="max_y" type="number" step="1" value="5" style="width:40px;"></input>
+			</div>
+		</div>
+	</div>
 <script src='/darcy-transforms/darcy.js'></script>
 </body>
 
