@@ -19,7 +19,7 @@ var pyy = 0;
 var px = 1;
 var py = 0.5;
 
-var qxx = 0;
+var qxx = 0.1;
 var qxy = 0;
 var qyy = 0;
 var qx = 0;
@@ -134,7 +134,7 @@ function transform_lines(ctx,lines,colour,xshift,yshift,h) {
 				start = lines[l].x2;
 				end = lines[l].x1;
 			}
-			for (var x = start; x <= end; x++) {
+			for (var x = start; x <= end; x+=0.5) {
 				var point = { x: x, y: (m*x)+c };
 				points.push(point);
 			}
