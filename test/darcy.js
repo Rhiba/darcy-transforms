@@ -28,6 +28,8 @@ var qy = 1.0;
 
 var drawing = new Array();
 
+var sline, eline;
+
 function p(x,y) {
 	return (pxx*x*x) + (pxy*x*y) + (pyy*y*y) + (px*x) + (py*y)
 }
@@ -39,10 +41,10 @@ function F(x,y) {
 }
 
 $( document ).ready(function() {
-	    $("#original").attr({width: canvas_width, height: canvas_height}).css({"margin": "10px", "border-style": "solid", "border-width": "2px"});
-	    $("#new").attr({width: canvas_width, height: canvas_height}).css({"margin": "10px", "border-style": "solid", "border-width": "2px"});
-		$(".quad").on('input',set_vars);
-		$(".range").on('input',function() {
+	    $('#original').attr({width: canvas_width, height: canvas_height}).css({'margin': '10px', 'border-style': 'solid', 'border-width': '2px'});
+	    $('#new').attr({width: canvas_width, height: canvas_height}).css({'margin': '10px', 'border-style': 'solid', 'border-width': '2px'});
+		$('.quad').on('input',set_vars);
+		$('.range').on('input',function() {
 			window[this.id] = parseInt(this.value,10);
 			width_x = Math.abs(max_x) + Math.abs(min_x);
 			width_y = Math.abs(max_y) + Math.abs(min_y);
@@ -50,15 +52,15 @@ $( document ).ready(function() {
 			y_size = (canvas_height/width_y);
 			draw_all();
 		});
-		$("#grid-show").on('change',function() {
+		$('#grid-show').on('change',function() {
 			show_grid = this.checked;
 			draw_all();
 		});
-		$("#axis-reset").on('click',function() {
-			$("#min_x").val(-5);
-			$("#max_x").val(5);
-			$("#min_y").val(-5);
-			$("#max_y").val(5);
+		$('#axis-reset').on('click',function() {
+			$('#min_x').val(-5);
+			$('#max_x').val(5);
+			$('#min_y').val(-5);
+			$('#max_y').val(5);
 			min_x = -5;
 			max_x = 5;
 			min_y = -5;
@@ -69,18 +71,29 @@ $( document ).ready(function() {
 			y_size = (canvas_height/width_y);
 			draw_all();
 		});
+		$('#original').on('mousedown', function () {
+			sline = getPos(event,this);
+			realToCanv(sline);
+		});
+		$('#original').on('mouseup', function () {
+			eline = getPos(event,this);
+			realToCanv(eline);
+			drawing.push({x1:sline.x,y1:sline.y,x2:eline.x,y2:eline.y});
+			console.log(drawing);
+			draw_all();
+		});
 		
-		$("#quad-reset").on('click',function() {
-			$("#pxx").val("0.00");
-			$("#pxy").val("0.00");
-			$("#pyy").val("0.00");
-			$("#px").val("1.00");
-			$("#py").val("0.00");
-			$("#qxx").val("0.00");
-			$("#qxy").val("0.00");
-			$("#qyy").val("0.00");
-			$("#qx").val("0.00");
-			$("#qy").val("1.00");
+		$('#quad-reset').on('click',function() {
+			$('#pxx').val('0.00');
+			$('#pxy').val('0.00');
+			$('#pyy').val('0.00');
+			$('#px').val('1.00');
+			$('#py').val('0.00');
+			$('#qxx').val('0.00');
+			$('#qxy').val('0.00');
+			$('#qyy').val('0.00');
+			$('#qx').val('0.00');
+			$('#qy').val('1.00');
 			pxx = 0.0;
 			pxy = 0.0;
 			pyy = 0.0;
@@ -93,13 +106,34 @@ $( document ).ready(function() {
 			qy = 1.0;
 			draw_all();
 		});
+		/*
 		drawing.push({ x1: 2.4, y1: 2.4, x2:4.2, y2: -0.2 });
 		drawing.push({ x1:4.2, y1: -0.2, x2:2.4, y2:-2.8 });
 		drawing.push({ x1:2.4, y1: -2.8, x2:0.6, y2:-0.2});
 		drawing.push({x1:0.6, y1:-0.2, x2:2.4, y2:2.4});
+		*/
 		draw_all();
 
 });
+function realToCanv(coord) {
+	var xshift = (0 - min_x)*x_size;
+	var yshift = (0 - min_y)*y_size;
+	var h = $('#original').height();
+	coord.x = (coord.x-xshift-0.5)/x_size;
+	coord.y = ((h-coord.y)-yshift-0.5)/y_size;
+}
+
+function getPos(event,elem) {
+    var rect = elem.getBoundingClientRect();
+	var styling = getComputedStyle(elem,null);
+	var lw = parseInt(styling.getPropertyValue('border-left-width').slice(0,-2),10);
+	var tw = parseInt(styling.getPropertyValue('border-top-width').slice(0,-2),10);
+    var x = event.clientX - rect.left - lw;
+    var y = event.clientY - rect.top - tw;
+    console.log('x: ' + x + ' y: ' + y);
+	return {x:x, y:y};
+}
+
 function set_vars() {
 	window[this.id] = parseFloat(this.value);
 	draw_all();
@@ -107,18 +141,18 @@ function set_vars() {
 
 function draw_all() {
 		if (x_size*width_x+0.5 >= canvas_width) {
-			$("#original").attr({width: x_size*width_x+1});
-			$("#new").attr({width: x_size*width_x+1});
+			$('#original').attr({width: x_size*width_x+1});
+			$('#new').attr({width: x_size*width_x+1});
 		}
 		if (y_size*width_y+0.5 >= canvas_height) {
-			$("#original").attr({height: y_size*width_y+1});
-			$("#new").attr({height: y_size*width_y+1});
+			$('#original').attr({height: y_size*width_y+1});
+			$('#new').attr({height: y_size*width_y+1});
 		}
 		
 
 		var lines = new Array();
-		var ctxorig = $("#original").get(0).getContext("2d");
-		var ctxnew = $("#new").get(0).getContext("2d");
+		var ctxorig = $('#original').get(0).getContext('2d');
+		var ctxnew = $('#new').get(0).getContext('2d');
 
 		ctxorig.clearRect(0,0,x_size*width_x+1,y_size*width_y+1);
 
@@ -138,22 +172,23 @@ function draw_all() {
 		axis_lines.push({x1:min_x,y1:0,x2:max_x,y2:0});
 		axis_lines.push({x1:0,y1:min_y,x2:0,y2:max_y});
 
-		var h = $("#original").height();
+		var h = $('#original').height();
 		// There will be h-height_value because top left is 0,0 in canvas but on axis, 0,0 is bottom left and that took me like 4 hours to figure out why it was broken fml
 
 		if (show_grid == true) {
-			draw_lines(ctxorig,lines,"green",xshift,yshift,h);
-			draw_lines(ctxorig,axis_lines,"black",xshift,yshift,h);
+			draw_lines(ctxorig,lines,'green',xshift,yshift,h);
+			draw_lines(ctxorig,axis_lines,'black',xshift,yshift,h);
 		}
-		draw_lines(ctxorig,drawing,"blue",xshift,yshift,h);
+		draw_lines(ctxorig,drawing,'blue',xshift,yshift,h);
 
 
 		if (show_grid == true) {
-			transform_lines(ctxnew,lines,"green",xshift,yshift,h);
-			transform_lines(ctxnew,axis_lines,"black",xshift,yshift,h);
+			transform_lines(ctxnew,lines,'green',xshift,yshift,h);
+			transform_lines(ctxnew,axis_lines,'black',xshift,yshift,h);
 		}
-		transform_lines(ctxnew,drawing,"red",xshift,yshift,h);
-		$("#darcy-forms").css("width",canvas_width*2 + 4*2 + 2);
+		transform_lines(ctxnew,drawing,'red',xshift,yshift,h);
+		$('#darcy-forms').css('width',canvas_width*2 + 4*2 + 2);
+		$('#darcy-info').css('width',canvas_width*2 + 4*2 + 2);
 }
 
 
