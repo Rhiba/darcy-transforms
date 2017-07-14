@@ -56,6 +56,10 @@ $( document ).ready(function() {
 			show_grid = this.checked;
 			draw_all();
 		});
+		$('#drawing-reset').on('click',function() {
+			drawing = [];
+			draw_all();
+		});
 		$('#axis-reset').on('click',function() {
 			$('#min_x').val(-5);
 			$('#max_x').val(5);

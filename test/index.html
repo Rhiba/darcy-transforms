@@ -13,13 +13,22 @@
 			<canvas id="new"></canvas>
 		</div>
 		<div id="darcy-info" style="font-size:14px;margin:0px 10px 10px 10px; padding: 5px 10px; border-style:solid; border-width:2px;">
-		Click and drag to draw lines on the left grid!
+			Click and drag to draw lines on the left grid!
+			<br />
+			<br />
+			Alternatively, choose a test image: (to be implemented)
+			<br />
+			<br />
+			Or, upload an image to create a line drawing: (to be implemented, experimental)
 		</div>
 		<div id="darcy-forms" style="font-size:14px;margin:10px; padding: 5px 10px; border-style:solid; border-width:2px;">
 			<table>
 				<tr>
-					<td colspan=2>
+					<td>
 						<b>Show grid: </b><input id="grid-show" type="checkbox" checked></input>
+					</td>
+					<td>
+						<button id="drawing-reset" style="margin-right:12px;float:right;width:70%;" type="button" >Reset Image</button>
 					</td>
 					<td colspan=2>
 						<b>x-range: </b>
@@ -38,10 +47,10 @@
 						<b>F(x,y) = (p(x,y), q(x,y))</b> where:
 					</td>
 					<td>
-						<button id="quad-reset" style="margin-right:12px;float:right;" type="button">Identity Map</button>
+						<button id="quad-reset" style="margin-right:12px;float:right;width:70%;" type="button">Identity Map</button>
 					</td>
 					<td colspan=2>
-						<button id="axis-reset" type="button">Reset Axes</button>
+						<button id="axis-reset" type="button" >Reset Axes</button>
 					</td>
 				</tr>
 				<tr>
