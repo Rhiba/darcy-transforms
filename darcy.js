@@ -1,9 +1,9 @@
 var canvas_width = 400;
 var canvas_height = 400;
-var max_x = 3;
-var min_x = -2;
-var max_y = 3;
-var min_y = -2;
+var max_x = 5;
+var min_x = -5;
+var max_y = 5;
+var min_y = -5;
 var line_width = 1;
 
 // Recalculate when changing above params
@@ -60,123 +60,98 @@ $( document ).ready(function() {
 			lines.push(line);
 		}
 
-		var h = $("#original").height();
-		// There will be h-height_value because top left is 0,0 in canvas but on axis, 0,0 is bottom left and that took me like 4 hours to figure out why it was broken fml
-		ctxorig.beginPath();
 		var xshift = (0 - min_x)*x_size;
 		var yshift = (0 - min_y)*y_size;
-		for (var i = 0; i < lines.length; i++) {
-			var realx1 = (lines[i].x1*x_size) + xshift + 0.5;
-			var realx2 = (lines[i].x2*x_size) + xshift + 0.5;
-			var realy1 = (lines[i].y1*y_size) + yshift + 0.5;
-			var realy2 = (lines[i].y2*y_size) + yshift + 0.5;
-			ctxorig.moveTo(realx1,h-realy1);
-			ctxorig.lineTo(realx2,h-realy2);
-		}
-		ctxorig.strokeStyle = "green";
-		ctxorig.lineWidth=line_width;
-		ctxorig.stroke();
-		ctxorig.fillStyle = "rgba(0,0,255,1)";
-		ctxorig.fillRect(xshift,h-yshift,5,5);
 
-		for (var l = 0; l < lines.length; l++) {
-			//deal with vertical lines separately
-			if (lines[l].x2-lines[l].x1 == 0) {
-				var x = lines[l].x1;
-				var points = new Array();
-				var start, end;
-				if (lines[l].y1 < lines[l].y2) {
-					start = lines[l].y1;
-					end = lines[l].y2;
-				} else {
-					start = lines[l].y2;
-					end = lines[l].y1;
-				}
-				for (var y = start; y <= end; y++) {
-					var point = { x: x, y: y };
-					points.push(point);
-				}
-				var start_point = F(points[0].x,points[0].y);
-				var realx = (start_point.x*x_size)+xshift+0.5;
-				var realy = (start_point.y*y_size)+yshift+0.5;
-				ctxnew.moveTo(realx,h-realy);
-				for (var i = 1; i < points.length; i++) {
-					var new_point = F(points[i].x,points[i].y);
-					realx = (new_point.x*x_size)+xshift+0.5;
-					realy = (new_point.y*y_size)+yshift+0.5;
-					ctxnew.lineTo(realx,h-realy);
-				}
-			} else {
-				var m = (lines[l].y2 - lines[l].y1)/(lines[l].x2 - lines[l].x1);
-				var c = lines[l].y2 - (lines[l].x2*m);
-				var points = new Array();
-				var start, end;
-				if (lines[l].x1 < lines[l].x2) {
-					start = lines[l].x1;
-					end = lines[l].x2;
-				} else {
-					start = lines[l].x2;
-					end = lines[l].x1;
-				}
-				for (var x = start; x <= end; x++) {
-					var point = { x: x, y: (m*x)+c };
-					points.push(point);
-				}
-				var start_point = F(points[0].x,points[0].y);
-				var realx = (start_point.x*x_size)+xshift+0.5;
-				var realy = (start_point.y*y_size)+yshift+0.5;
-				ctxnew.moveTo(realx,h-realy);
-				for (var i = 1; i < points.length; i++) {
-					var new_point = F(points[i].x,points[i].y);
-					realx = (new_point.x*x_size)+xshift+0.5;
-					realy = (new_point.y*y_size)+yshift+0.5;
-					ctxnew.lineTo(realx,h-realy);
-				}
-			}
-		}
+		var axis_lines = new Array();
+		axis_lines.push({x1:min_x,y1:0,x2:max_x,y2:0});
+		axis_lines.push({x1:0,y1:min_y,x2:0,y2:max_y});
 
-		ctxnew.lineWidth = line_width;
-		ctxnew.strokeStyle = "red";
-		ctxnew.stroke();
+		var h = $("#original").height();
+		// There will be h-height_value because top left is 0,0 in canvas but on axis, 0,0 is bottom left and that took me like 4 hours to figure out why it was broken fml
+
+		draw_lines(ctxorig,lines,"green",xshift,yshift,h);
+		draw_lines(ctxorig,axis_lines,"black",xshift,yshift,h);
+
+		transform_lines(ctxnew,lines,"red",xshift,yshift,h);
+		transform_lines(ctxnew,axis_lines,"black",xshift,yshift,h);
 
 });
 
-function draw_grid(id){
-	var context = $(id).get(0).getContext("2d");
-	context.beginPath();
-
-	for (var x = 0; x <= width_x; x++) {
-		context.moveTo(x*x_size,0);
-		context.lineTo(x*x_size,y_size*width_y);
+function draw_lines(ctx,lines,colour,xshift,yshift,h) {
+	ctx.beginPath();
+	for (var i = 0; i < lines.length; i++) {
+		var realx1 = (lines[i].x1*x_size) + xshift + 0.5;
+		var realx2 = (lines[i].x2*x_size) + xshift + 0.5;
+		var realy1 = (lines[i].y1*y_size) + yshift + 0.5;
+		var realy2 = (lines[i].y2*y_size) + yshift + 0.5;
+		ctx.moveTo(realx1,h-realy1);
+		ctx.lineTo(realx2,h-realy2);
 	}
-	for (var y = 0; y <= width_y; y++) {
-		context.moveTo(0,y*y_size);
-		context.lineTo(width_x*x_size,y*y_size);
-	}
-
-	context.strokeStyle = "green";
-	context.lineWidth=line_width;
-	context.stroke();
-
-	/*
-	context.beginPath();
-	context.moveTo((width_x/2)*x_size,0);
-	context.lineTo((width_x/2)*x_size,y_size*width_y);
-	context.moveTo(0,(width_y/2)*y_size);
-	context.lineTo(x_size*width_x,(width_y/2)*y_size);
-
-	context.strokeStyle = "black";
-	context.lineWidth=line_width;
-	context.stroke();
-	*/
-	
+	ctx.strokeStyle = colour;
+	ctx.lineWidth=line_width;
+	ctx.stroke();
 }
 
-function test_circle(id,col){
-	var context = $(id).get(0).getContext("2d");
-	context.beginPath();
-	context.arc(x_size*(width_x/2),y_size*(width_y/2),x_size*2,0,2*Math.PI);
-	context.strokeStyle = col;
-	context.lineWidth=line_width;
-	context.stroke();
+function transform_lines(ctx,lines,colour,xshift,yshift,h) {
+	ctx.beginPath();
+	for (var l = 0; l < lines.length; l++) {
+		//deal with vertical lines separately
+		if (lines[l].x2-lines[l].x1 == 0) {
+			var x = lines[l].x1;
+			var points = new Array();
+			var start, end;
+			if (lines[l].y1 < lines[l].y2) {
+				start = lines[l].y1;
+				end = lines[l].y2;
+			} else {
+				start = lines[l].y2;
+				end = lines[l].y1;
+			}
+			for (var y = start; y <= end; y++) {
+				var point = { x: x, y: y };
+				points.push(point);
+			}
+			var start_point = F(points[0].x,points[0].y);
+			var realx = (start_point.x*x_size)+xshift+0.5;
+			var realy = (start_point.y*y_size)+yshift+0.5;
+			ctx.moveTo(realx,h-realy);
+			for (var i = 1; i < points.length; i++) {
+				var new_point = F(points[i].x,points[i].y);
+				realx = (new_point.x*x_size)+xshift+0.5;
+				realy = (new_point.y*y_size)+yshift+0.5;
+				ctx.lineTo(realx,h-realy);
+			}
+		} else {
+			var m = (lines[l].y2 - lines[l].y1)/(lines[l].x2 - lines[l].x1);
+			var c = lines[l].y2 - (lines[l].x2*m);
+			var points = new Array();
+			var start, end;
+			if (lines[l].x1 < lines[l].x2) {
+				start = lines[l].x1;
+				end = lines[l].x2;
+			} else {
+				start = lines[l].x2;
+				end = lines[l].x1;
+			}
+			for (var x = start; x <= end; x++) {
+				var point = { x: x, y: (m*x)+c };
+				points.push(point);
+			}
+			var start_point = F(points[0].x,points[0].y);
+			var realx = (start_point.x*x_size)+xshift+0.5;
+			var realy = (start_point.y*y_size)+yshift+0.5;
+			ctx.moveTo(realx,h-realy);
+			for (var i = 1; i < points.length; i++) {
+				var new_point = F(points[i].x,points[i].y);
+				realx = (new_point.x*x_size)+xshift+0.5;
+				realy = (new_point.y*y_size)+yshift+0.5;
+				ctx.lineTo(realx,h-realy);
+			}
+		}
+	}
+
+	ctx.lineWidth = line_width;
+	ctx.strokeStyle = colour;
+	ctx.stroke();
 }
