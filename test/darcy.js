@@ -6,6 +6,7 @@ var max_y = 5;
 var min_y = -5;
 var line_width = 1;
 var show_grid = true;
+var undos = new Array();
 
 // Recalculate when changing above params
 var width_x = Math.abs(max_x) + Math.abs(min_x);
@@ -83,7 +84,7 @@ $( document ).ready(function() {
 			eline = getPos(event,this);
 			realToCanv(eline);
 			drawing.push({x1:sline.x,y1:sline.y,x2:eline.x,y2:eline.y});
-			console.log(drawing);
+			undos = [];
 			draw_all();
 		});
 		
@@ -110,6 +111,21 @@ $( document ).ready(function() {
 			qy = 1.0;
 			draw_all();
 		});
+
+		$('#undo').on('click',function() {
+			if (drawing.length > 0) {
+				undos.push(drawing.pop());
+			}
+			draw_all();
+		});
+		$('#redo').on('click',function() {
+			if (undos.length > 0) {
+				drawing.push(undos.pop());
+			}
+			draw_all();
+		});
+
+
 		/*
 		drawing.push({ x1: 2.4, y1: 2.4, x2:4.2, y2: -0.2 });
 		drawing.push({ x1:4.2, y1: -0.2, x2:2.4, y2:-2.8 });
