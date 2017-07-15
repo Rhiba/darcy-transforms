@@ -8,6 +8,8 @@ var line_width = 1;
 var show_grid = true;
 var undos = new Array();
 
+var green="#7aff7c";
+
 // Recalculate when changing above params
 var width_x = Math.abs(max_x) + Math.abs(min_x);
 var width_y = Math.abs(max_y) + Math.abs(min_y);
@@ -196,14 +198,14 @@ function draw_all() {
 		// There will be h-height_value because top left is 0,0 in canvas but on axis, 0,0 is bottom left and that took me like 4 hours to figure out why it was broken fml
 
 		if (show_grid == true) {
-			draw_lines(ctxorig,lines,'green',xshift,yshift,h);
+			draw_lines(ctxorig,lines,green,xshift,yshift,h);
 			draw_lines(ctxorig,axis_lines,'black',xshift,yshift,h);
 		}
 		draw_lines(ctxorig,drawing,'blue',xshift,yshift,h);
 
 
 		if (show_grid == true) {
-			transform_lines(ctxnew,lines,'green',xshift,yshift,h);
+			transform_lines(ctxnew,lines,green,xshift,yshift,h);
 			transform_lines(ctxnew,axis_lines,'black',xshift,yshift,h);
 		}
 		transform_lines(ctxnew,drawing,'red',xshift,yshift,h);
