@@ -270,7 +270,7 @@ function transform_lines(ctx,lines,colour,xshift,yshift,h) {
 				start = lines[l].x2;
 				end = lines[l].x1;
 			}
-			for (var x = start; x <= end; x+=0.01) {
+			for (var x = start; x <= end; x+=0.001) {
 				var point = { x: x, y: (m*x)+c };
 				points.push(point);
 			}
