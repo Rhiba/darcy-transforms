@@ -78,11 +78,12 @@ $( document ).ready(function() {
 			y_size = (canvas_height/width_y);
 			draw_all();
 		});
-		$('#original').on('mousedown', function () {
+		$('#original').on('mousedown', function (event) {
+			console.log(arguments);
 			sline = getPos(event,this);
 			realToCanv(sline);
 		});
-		$('#original').on('mouseup', function () {
+		$('#original').on('mouseup', function (event) {
 			eline = getPos(event,this);
 			realToCanv(eline);
 			drawing.push({x1:sline.x,y1:sline.y,x2:eline.x,y2:eline.y});
