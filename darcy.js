@@ -249,6 +249,7 @@ function transform_lines(ctx,lines,colour,xshift,yshift,h) {
 				var point = { x: x, y: y };
 				points.push(point);
 			}
+			points.push({x:x,y:end});
 			var start_point = F(points[0].x,points[0].y);
 			var realx = (start_point.x*x_size)+xshift+0.5;
 			var realy = (start_point.y*y_size)+yshift+0.5;
@@ -271,10 +272,11 @@ function transform_lines(ctx,lines,colour,xshift,yshift,h) {
 				start = lines[l].x2;
 				end = lines[l].x1;
 			}
-			for (var x = start; x <= end; x+=0.001) {
+			for (var x = start; x <= end; x+=0.01) {
 				var point = { x: x, y: (m*x)+c };
 				points.push(point);
 			}
+			points.push({x:end,y:(m*end)+c});
 			var start_point = F(points[0].x,points[0].y);
 			var realx = (start_point.x*x_size)+xshift+0.5;
 			var realy = (start_point.y*y_size)+yshift+0.5;
