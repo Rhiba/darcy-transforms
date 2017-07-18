@@ -4,6 +4,11 @@
 <head>
 	<title>D'Arcy Transform Webapp</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	 <style TYPE="text/css">
+		* {
+			font-size: 14px;
+		}
+	 </style>
 </head>
 
 <body>
@@ -12,7 +17,7 @@
 			<canvas id="original"></canvas>
 			<canvas id="new"></canvas>
 		</div>
-		<div id="darcy-info" style="font-size:14px;margin:0px 10px 10px 10px; padding: 5px 10px; border-style:solid; border-width:2px;">
+		<div id="darcy-info" style="margin:0px 10px 10px 10px; padding: 5px 10px; border-style:solid; border-width:2px;">
 			Click and drag to draw lines on the left grid!
 			<button id="undo" style="width:50px;" type="button">Undo</button>
 			<button id="redo" style="width:50px;" type="button">Redo</button>
@@ -20,7 +25,11 @@
 			<a href="" id="drawing-download" style="-webkit-appearance:button; -moz-appearance:button; appearance:button; text-decoration:none; color:initial;padding:4px;float:right;">Download as Line Drawing</a>
 			<br />
 			<br />
-			Alternatively, choose a test image: (to be implemented)
+			Alternatively, choose a test image:
+			<select name="image" id="test-images">
+				<option value="1">None</option>
+				<option value="2">Argyropelecus Olfersi</option>
+			</select>
 			<br />
 			<br />
 			Or, upload an image to create a line drawing: (to be implemented, experimental)
@@ -30,7 +39,7 @@
 			<input id="drawing-upload" type="file" /><br /><input id="drawing-upload-button" type="button" value="Upload" />
 
 		</div>
-		<div id="darcy-forms" style="font-size:14px;margin:10px; padding: 5px 10px; border-style:solid; border-width:2px;">
+		<div id="darcy-forms" style="margin:10px; padding: 5px 10px; border-style:solid; border-width:2px;">
 			<table>
 				<tr>
 					<td colspan=2>
@@ -93,6 +102,7 @@
 		</div>
 	</div>
 <script src='./darcy.js'></script>
+<script src='./testimages.js'></script>
 </body>
 
 </html>

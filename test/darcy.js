@@ -61,7 +61,25 @@ $( document ).ready(function() {
 		});
 		$('#drawing-reset').on('click',function() {
 			drawing = [];
+			undos = [];
 			draw_all();
+		});
+		$('#test-images').on('change',function() {
+			undos = [];
+			switch (this.value) {
+				case "1":
+					drawing = [];
+					undos = [];
+					draw_all();
+					break;
+				case "2":
+					drawing = fish;
+					undos = [];
+					draw_all();
+					break;
+				default:
+				break;
+			}
 		});
 		$('#axis-reset').on('click',function() {
 			$('#min_x').val(-5);
@@ -136,6 +154,7 @@ $( document ).ready(function() {
 			fr = new FileReader();
 			fr.onload = function () {
 				drawing = JSON.parse(fr.result);
+				undos = [];
 				draw_all();
 			}
 			fr.readAsText(thing);
