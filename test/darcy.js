@@ -77,6 +77,26 @@ $( document ).ready(function() {
 					undos = [];
 					draw_all();
 					break;
+				case "3":
+					drawing = square;
+					undos = [];
+					draw_all();
+					break;
+				case "4":
+					var p1x = 0;
+					var p1y = 0;
+					var cx = 0;
+					var cy = 0;
+					var radius = 3;
+					var lineArr = new Array();
+					for (var x = 0; x <= 2*Math.PI-((10*Math.PI)/180); x = x+((10*Math.PI)/180)) {
+						var line = { "x1":Math.sin(x)*radius,"y1":Math.cos(x)*radius,"x2":Math.sin(x+((10*Math.PI)/180))*radius,"y2":Math.cos(x+((10*Math.PI)/180))*radius};
+						lineArr.push(line);
+					}
+					drawing = lineArr;
+					undos = [];
+					draw_all();
+					break;
 				default:
 				break;
 			}
