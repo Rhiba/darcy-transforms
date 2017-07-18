@@ -79,7 +79,6 @@ $( document ).ready(function() {
 			draw_all();
 		});
 		$('#original').on('mousedown', function (event) {
-			console.log(arguments);
 			sline = getPos(event,this);
 			realToCanv(sline);
 		});
@@ -87,6 +86,11 @@ $( document ).ready(function() {
 			eline = getPos(event,this);
 			realToCanv(eline);
 			drawing.push({x1:sline.x,y1:sline.y,x2:eline.x,y2:eline.y});
+
+			var jsonString = JSON.stringify(drawing);
+			var encoded = btoa(jsonString);
+			$('#drawing-download').attr({"href":"data:application/octet-stream;charset:utf-8;base64,"+encoded,"download":"drawing.json"});
+
 			undos = [];
 			draw_all();
 		});
@@ -127,14 +131,16 @@ $( document ).ready(function() {
 			}
 			draw_all();
 		});
+		$('#drawing-upload-button').on('click',function() {
+			var thing = $('#drawing-upload')[0].files[0];
+			fr = new FileReader();
+			fr.onload = function () {
+				drawing = JSON.parse(fr.result);
+				draw_all();
+			}
+			fr.readAsText(thing);
+		});
 
-
-		/*
-		drawing.push({ x1: 2.4, y1: 2.4, x2:4.2, y2: -0.2 });
-		drawing.push({ x1:4.2, y1: -0.2, x2:2.4, y2:-2.8 });
-		drawing.push({ x1:2.4, y1: -2.8, x2:0.6, y2:-0.2});
-		drawing.push({x1:0.6, y1:-0.2, x2:2.4, y2:2.4});
-		*/
 		draw_all();
 
 });
@@ -153,7 +159,6 @@ function getPos(event,elem) {
 	var tw = parseInt(styling.getPropertyValue('border-top-width').slice(0,-2),10);
     var x = event.clientX - rect.left - lw;
     var y = event.clientY - rect.top - tw;
-    console.log('x: ' + x + ' y: ' + y);
 	return {x:x, y:y};
 }
 
