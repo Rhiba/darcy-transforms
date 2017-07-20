@@ -73,16 +73,26 @@ $( document ).ready(function() {
 					draw_all();
 					break;
 				case "2":
-					drawing = fish;
+					drawing = archae;
 					undos = [];
 					draw_all();
 					break;
 				case "3":
-					drawing = square;
+					drawing = fish2;
 					undos = [];
 					draw_all();
 					break;
 				case "4":
+					drawing = fish;
+					undos = [];
+					draw_all();
+					break;
+				case "5":
+					drawing = square;
+					undos = [];
+					draw_all();
+					break;
+				case "6":
 					var p1x = 0;
 					var p1y = 0;
 					var cx = 0;
